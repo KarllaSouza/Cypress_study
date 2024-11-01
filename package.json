@@ -1,6 +1,9 @@
 {
   "name": "cypress_project",
   "version": "1.0.0",
+  "scripts": {
+    "start": "cypress run"
+  },
   "dependencies": {
     "cypress": "^13.15.1"
   }
