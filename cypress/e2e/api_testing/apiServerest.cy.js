@@ -226,7 +226,7 @@ describe('Testes API - Usuário', () => {
         });
     });
 
-    context.only('Cenário 4 (falha): cadastro de usuário sem dados', () => {
+    context('Cenário 4 (falha): cadastro de usuário sem dados', () => {
         console.log('teste 4');
 
         it('Dados em branco', () => {
