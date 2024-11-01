@@ -190,7 +190,7 @@ describe('Testes API - Usuário', () => {
         });
     })
 
-    context.only('Cenário 3 (falha): cadastro de usuário com e-mail já utilizado', () => {
+    context('Cenário 3 (falha): cadastro de usuário com e-mail já utilizado', () => {
         console.log('teste - cenário 3');
         beforeEach(() => {
             cy.setupUser();
@@ -216,7 +216,6 @@ describe('Testes API - Usuário', () => {
                     expect(response.body.message).to.eq('Este email já está sendo usado');
                 });
 
-
             });
 
         });
@@ -225,31 +224,80 @@ describe('Testes API - Usuário', () => {
             console.log('after - teardown !!!!!!!!!!!');
             cy.teardownUser();
         });
-        //Post cadastro - sucesso
-
-        //Post cadastro com mesmo e-mail
-        // it('Cadastrar usuário', () => {
-        //     cy.request({
-        //         url: 'https://serverest.dev/usuarios/',
-        //         method: 'POST',
-        //         body: {
-        //             "nome": "QA Teste",
-        //             "email": "teste_1@qa.com",
-        //             "password": "123",
-        //             "administrador": "true"
-        //         }
-        //     }).then(response => {
-        //         expect(response.status).to.eq(400);
-        //         expect(response.body.message).to.eq('Este email já está sendo usado')
-        //     })
-        // });
-
-        //Del deletar usuário com sucesso + get Consultar usuário deletado
-
     });
 
-    context('Cenário 4 (falha): cadastro de usuário sem dados', () => {
-        //Post cadastro sem dados
+    context.only('Cenário 4 (falha): cadastro de usuário sem dados', () => {
+        console.log('teste 4');
+
+        it('Dados em branco', () => {
+            console.log('dentro do it')
+            cy.request({
+                url: 'https://serverest.dev/usuarios/',
+                method: 'POST',
+                body: {
+                    "nome": "",
+                    "email": "",
+                    "password": "",
+                    "administrador": ""
+                },
+                failOnStatusCode: false
+            }).then(response => {
+                console.log('validações - em branco');
+                console.log(response.body);
+
+                expect(response.status).to.eq(400);
+                console.log('status: ' + response.status);
+
+                expect(response.body.nome).to.eq('nome não pode ficar em branco');
+                expect(response.body.email).to.eq('email não pode ficar em branco');
+                expect(response.body.password).to.eq('password não pode ficar em branco');
+                expect(response.body.administrador).to.eq('administrador deve ser \'true\' ou \'false\'');
+            })
+        });
+
+        it('Dados inválidos', () => {
+            cy.request({
+                url: 'https://serverest.dev/usuarios/',
+                method: 'POST',
+                body: {
+                    "email": " ",
+                    "administrador": " "
+                },
+                failOnStatusCode: false
+            }).then(response => {
+                console.log('validações - Dados inválidos');
+                console.log(response.body);
+
+                expect(response.status).to.eq(400);
+                console.log('status: ' + response.status);
+
+                expect(response.body.nome).to.eq('nome é obrigatório');
+                expect(response.body.email).to.eq('email deve ser um email válido');
+                expect(response.body.password).to.eq('password é obrigatório');
+                expect(response.body.administrador).to.eq('administrador deve ser \'true\' ou \'false\'');
+            })
+        });
+
+        it('Sem dados no body', () => {
+            cy.request({
+                url: 'https://serverest.dev/usuarios/',
+                method: 'POST',
+                body: {},
+                failOnStatusCode: false
+            }).then(response => {
+                console.log('validações - Dados inválidos');
+                console.log(response.body);
+
+                expect(response.status).to.eq(400);
+                console.log('status: ' + response.status);
+
+                expect(response.body.nome).to.eq('nome é obrigatório');
+                expect(response.body.email).to.eq('email é obrigatório');
+                expect(response.body.password).to.eq('password é obrigatório');
+                expect(response.body.administrador).to.eq('administrador é obrigatório');
+            })
+        });
+
     })
 });
 
