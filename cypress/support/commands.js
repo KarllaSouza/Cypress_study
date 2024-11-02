@@ -1,6 +1,6 @@
 Cypress.Commands.add('setupUser', () => {
     // it('Cadastrar usuário', () => {
-    console.log('setup');
+//    console.log('setup');
     cy.request({
         url: 'https://serverest.dev/usuarios/', //'${urlApi}',
         method: 'POST',
@@ -13,9 +13,11 @@ Cypress.Commands.add('setupUser', () => {
     }).then(response => {
         expect(response.status).to.eq(201);
         const userId = response.body._id; // Armazena o ID do usuário criado, que é retornado no corpo da resposta da API.
-        console.log(`user ID: ${userId}`) // Exibe o ID do usuário criado no console, o que pode ser útil para depuração.
+//        console.log(`user ID: ${userId}`) // Exibe o ID do usuário criado no console, o que pode ser útil para depuração.
         Cypress.env('userId', userId) //Armazena o ID do usuário em uma variável de ambiente do Cypress (userId). Isso permite que outras partes do teste acessem este valor.
         expect(Cypress.env('userId'), userId);
+        // '${Cypress.env(userId)}',
+        //    expect(response.body.usuarios[0].nome).to.equal('QA Teste')
 
         cy.request({
             url: `https://serverest.dev/usuarios/${Cypress.env('userId')}`,
@@ -24,7 +26,7 @@ Cypress.Commands.add('setupUser', () => {
 
     }).then(response => {
         expect(response.status).to.eq(200);
-        console.log(response.body);
+//        console.log(response.body);
         const userEmail = response.body.email;
         const userPassword = response.body.password;
         const userId = response.body._id;
@@ -86,17 +88,17 @@ Cypress.Commands.add('setupUser', () => {
 
 
 Cypress.Commands.add('teardownUser', () => {
-    console.log('tear down user');
-    console.log(`id: ${Cypress.env('userId')}`);
+    // console.log('teardown user');
+    // console.log(`id: ${Cypress.env('userId')}`);
     cy.request({
         url: `https://serverest.dev/usuarios/${Cypress.env('userId')}`,
         method: 'DELETE',
         body: {},
         // headers: `${Cypress.env('tokenAuthorization')}`
     }).then(response => {
-        console.log('delete');
+        // console.log('delete');
         expect(response.status).to.eq(200);
-        console.log(response);
+        // console.log(response);
         expect(response.body.message).to.eq('Registro excluído com sucesso');
     });
 
@@ -105,9 +107,9 @@ Cypress.Commands.add('teardownUser', () => {
         method: 'GET',
         failOnStatusCode: false  // Evita que o Cypress falhe automaticamente em caso de status de erro
     }).then(response => {
-        console.log('deletado');
+        // console.log('deletado');
         expect(response.status).to.eq(400);
-        console.log(response);
+        // console.log(response);
         expect(response.body.message).to.eq('Usuário não encontrado');
 
         expect(response.body.nome).to.eq(undefined);

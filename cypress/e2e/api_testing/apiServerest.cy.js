@@ -1,11 +1,11 @@
 /// <reference types="cypress" />
 import ('../../support/commands.js')
 
-describe('Testes API - Usuário', () => {
+describe('API tests - User', () => {
     //   const urlApi = 'https://serverest.dev/usuarios/';
 
-    context('Cenário 1 (Sucesso): fazer CRUD da API de usuário (Requests em testes separados)', () => {
-        it('Cadastrar usuário', () => {
+    context('Scenario 1 (success): Execute CRUD of user API', () => {
+        it('Case 1.1: Create user', () => {
             cy.request({
                 url: 'https://serverest.dev/usuarios/', //'${urlApi}',
                 method: 'POST',
@@ -17,23 +17,18 @@ describe('Testes API - Usuário', () => {
                 }
             }).then(response => {
                 expect(response.status).to.eq(201);
-                const userId = response.body._id; // Armazena o ID do usuário criado, que é retornado no corpo da resposta da API.
-                console.log('user ID: ' + response.body._id) // Exibe o ID do usuário criado no console, o que pode ser útil para depuração.
-                Cypress.env('userId', response.body._id) //Armazena o ID do usuário em uma variável de ambiente do Cypress (userId). Isso permite que outras partes do teste acessem este valor.
-                // '${Cypress.env(userId)}',
-                //    expect(response.body.usuarios[0].nome).to.equal('QA Teste')
+                const userId = response.body._id;
+                Cypress.env('userId', response.body._id)
                 expect(response.body.message).to.eq('Cadastro realizado com sucesso')
             })
         });
 
-        it('Consultar usuário - após cadastro', () => {
+        it('Case 1.2: Find user - after create', () => {
             cy.request({
                 url: `https://serverest.dev/usuarios/${Cypress.env('userId')}`,
                 method: 'GET',
             }).then(response => {
                 expect(response.status).to.eq(200);
-                console.log(response);
-
                 expect(response.body.nome).to.not.eq(undefined);
                 expect(response.body.email).to.not.eq(undefined);
                 expect(response.body.password).to.not.eq(undefined);
@@ -52,7 +47,7 @@ describe('Testes API - Usuário', () => {
             })
         });
 
-        it('Editar usuário', () => {
+        it('Case 1.3: Update user', () => {
             cy.request({
                 url: `https://serverest.dev/usuarios/${Cypress.env('userId')}`,
                 method: 'PUT',
@@ -68,14 +63,12 @@ describe('Testes API - Usuário', () => {
             })
         });
 
-        it('Consultar usuário - após edição', () => {
+        it('Case 1.4: Find user - after update', () => {
             cy.request({
                 url: `https://serverest.dev/usuarios/${Cypress.env('userId')}`,
                 method: 'GET',
             }).then(response => {
                 expect(response.status).to.eq(200);
-                console.log(response);
-
                 expect(response.body.nome).to.eq('QA Teste_editado');
                 expect(response.body.email).to.eq('teste_1_editado@qa.com');
                 expect(response.body.password).to.eq('123_edicao');
@@ -93,26 +86,24 @@ describe('Testes API - Usuário', () => {
             })
         });
 
-        it('Deletar usuário', () => {
+        it('Case 1.5: Delete user', () => {
             cy.request({
                 url: `https://serverest.dev/usuarios/${Cypress.env('userId')}`,
                 method: 'DELETE',
                 body: {}
             }).then(response => {
                 expect(response.status).to.eq(200);
-                console.log(response);
                 expect(response.body.message).to.eq('Registro excluído com sucesso');
             })
         });
 
-        it('Consultar usuário - após exclusão', () => {
+        it('Case 1.6: Find user - after delete', () => {
             cy.request({
                 url: `https://serverest.dev/usuarios/${Cypress.env('userId')}`,
                 method: 'GET',
                 failOnStatusCode: false  // Evita que o Cypress falhe automaticamente em caso de status de erro
             }).then(response => {
                 expect(response.status).to.eq(400);
-                console.log(response);
                 expect(response.body.message).to.eq('Usuário não encontrado');
 
                 expect(response.body.nome).to.eq(undefined);
@@ -123,8 +114,8 @@ describe('Testes API - Usuário', () => {
         });
     });
 
-    context('Cenário 2 (sucesso): Cadastro através do PUT', () => {
-        it('Editar usuário', () => {
+    context('Scenario 2 (success): Create user through PUT', () => {
+        it('Case 2.1: Update user', () => {
             cy.request({
                 url: `https://serverest.dev/usuarios/123123123`,
                 method: 'PUT',
@@ -138,21 +129,17 @@ describe('Testes API - Usuário', () => {
                 expect(response.status).to.eq(201);
                 expect(response.body.message).to.eq('Cadastro realizado com sucesso')
                 expect(response.body._id).to.not.equal(undefined)
-
-                const userId = response.body._id; // Armazena o ID do usuário criado
-                console.log('user ID: ' + response.body._id) // Exibe o ID do usuário criado no console
-                Cypress.env('userId', response.body._id) //Armazena o ID do usuário em uma variável de ambiente (userId).
+                const userId = response.body._id;
+                Cypress.env('userId', response.body._id)
             })
         });
 
-        it('Consultar usuário - após cadastro no put', () => {
+        it('Case 2.2: Find user - after create through PUT', () => {
             cy.request({
                 url: `https://serverest.dev/usuarios/${Cypress.env('userId')}`,
                 method: 'GET',
             }).then(response => {
                 expect(response.status).to.eq(200);
-                console.log(response);
-
                 expect(response.body.nome).to.eq('QA Teste - criado no put');
                 expect(response.body.email).to.eq('teste_1_editado-no-put@qa.com');
                 expect(response.body.password).to.eq('teste123-put');
@@ -160,28 +147,25 @@ describe('Testes API - Usuário', () => {
             })
         });
 
-        it('Deletar usuário', () => {
+        it('Case 2.3: Delete user', () => {
             cy.request({
                 url: `https://serverest.dev/usuarios/${Cypress.env('userId')}`,
                 method: 'DELETE',
                 body: {}
             }).then(response => {
                 expect(response.status).to.eq(200);
-                console.log(response);
                 expect(response.body.message).to.eq('Registro excluído com sucesso');
             })
         });
 
-        it('Consultar usuário - após exclusão', () => {
+        it('Case 2.4: Find user - after delete', () => {
             cy.request({
                 url: `https://serverest.dev/usuarios/${Cypress.env('userId')}`,
                 method: 'GET',
-                failOnStatusCode: false  // Evita que o Cypress falhe automaticamente em caso de status de erro
+                failOnStatusCode: false
             }).then(response => {
                 expect(response.status).to.eq(400);
-                console.log(response);
                 expect(response.body.message).to.eq('Usuário não encontrado');
-
                 expect(response.body.nome).to.eq(undefined);
                 expect(response.body.email).to.eq(undefined);
                 expect(response.body.password).to.eq(undefined);
@@ -190,17 +174,13 @@ describe('Testes API - Usuário', () => {
         });
     })
 
-    context('Cenário 3 (falha): cadastro de usuário com e-mail já utilizado', () => {
-        console.log('teste - cenário 3');
+    context('Scenario 3 (fail): Duplicated record', () => {
         beforeEach(() => {
             cy.setupUser();
         });
 
-        it('cadastro com falha - e-mail já cadastrado', () => {
-            console.log('teste com e-mail duplicado');
-
+        it('Case 3.1: Duplicated email', () => {
             cy.get('@user').then((user) => {
-
                 cy.request({
                     url: 'https://serverest.dev/usuarios/',
                     method: 'POST',
@@ -215,22 +195,16 @@ describe('Testes API - Usuário', () => {
                     expect(response.status).to.eq(400);
                     expect(response.body.message).to.eq('Este email já está sendo usado');
                 });
-
             });
-
         });
 
         afterEach(() => {
-            console.log('after - teardown !!!!!!!!!!!');
             cy.teardownUser();
         });
     });
 
-    context('Cenário 4 (falha): cadastro de usuário sem dados', () => {
-        console.log('teste 4');
-
-        it('Dados em branco', () => {
-            console.log('dentro do it')
+    context('Scenario 4 (fail): Create user without data', () => {
+        it('Case 4.1: Blank data', () => {
             cy.request({
                 url: 'https://serverest.dev/usuarios/',
                 method: 'POST',
@@ -242,12 +216,7 @@ describe('Testes API - Usuário', () => {
                 },
                 failOnStatusCode: false
             }).then(response => {
-                console.log('validações - em branco');
-                console.log(response.body);
-
                 expect(response.status).to.eq(400);
-                console.log('status: ' + response.status);
-
                 expect(response.body.nome).to.eq('nome não pode ficar em branco');
                 expect(response.body.email).to.eq('email não pode ficar em branco');
                 expect(response.body.password).to.eq('password não pode ficar em branco');
@@ -255,7 +224,7 @@ describe('Testes API - Usuário', () => {
             })
         });
 
-        it('Dados inválidos', () => {
+        it('Case 4.2: Invalid data', () => {
             cy.request({
                 url: 'https://serverest.dev/usuarios/',
                 method: 'POST',
@@ -265,12 +234,7 @@ describe('Testes API - Usuário', () => {
                 },
                 failOnStatusCode: false
             }).then(response => {
-                console.log('validações - Dados inválidos');
-                console.log(response.body);
-
                 expect(response.status).to.eq(400);
-                console.log('status: ' + response.status);
-
                 expect(response.body.nome).to.eq('nome é obrigatório');
                 expect(response.body.email).to.eq('email deve ser um email válido');
                 expect(response.body.password).to.eq('password é obrigatório');
@@ -278,39 +242,58 @@ describe('Testes API - Usuário', () => {
             })
         });
 
-        it('Sem dados no body', () => {
+        it('Case 4.3: Without data on body', () => {
             cy.request({
                 url: 'https://serverest.dev/usuarios/',
                 method: 'POST',
                 body: {},
                 failOnStatusCode: false
             }).then(response => {
-                console.log('validações - Dados inválidos');
-                console.log(response.body);
-
                 expect(response.status).to.eq(400);
-                console.log('status: ' + response.status);
-
                 expect(response.body.nome).to.eq('nome é obrigatório');
                 expect(response.body.email).to.eq('email é obrigatório');
                 expect(response.body.password).to.eq('password é obrigatório');
                 expect(response.body.administrador).to.eq('administrador é obrigatório');
             })
         });
-
     })
+
+    context('Scenario 5 (fail): User\'s list', () => {
+        it('Case 5.1: E-mail null', () => {
+            cy.request({
+                url: 'https://serverest.dev/usuarios?email=null',
+                method: 'GET',
+                failOnStatusCode: false
+            }).then(response => {
+                expect(response.status).to.eq(400);
+                expect(response.body.email).to.equal('email deve ser um email válido');
+            })
+        });
+
+        it('Case 5.2: ID null', () => {
+            cy.request({
+                url: 'https://serverest.dev/usuarios/null',
+                method: 'GET',
+                failOnStatusCode: false
+            }).then(response => {
+                expect(response.status).to.eq(400);
+                expect(response.body.message).to.equal('Usuário não encontrado');
+            })
+        });
+    });
+
+//    context('', () => {});
+
 });
 
 
-describe('Teste API - Login', () => {
-    context('Cenário 3: fazer Login)', () => {
-        console.log('context');
+describe('API Tests - Login', () => {
+    context('Scenario 6: Execute Login', () => {
         beforeEach(() => {
-            console.log('before');
             cy.setupUser();
         })
 
-        it('Login com sucesso', () => {
+        it('Case 6.1: Success login', () => {
             cy.request({
                 url: 'https://serverest.dev/login/',
                 method: 'POST',
@@ -321,7 +304,6 @@ describe('Teste API - Login', () => {
                 // headers: `${Cypress.env('tokenAuthorization')}`
             }).then(response => {
                 expect(response.status).to.eq(200);
-                console.log(response);
                 expect(response.body.message).to.eq('Login realizado com sucesso');
                 expect(response.body.authorization).to.not.eq(undefined);
                 const tokenAuthorization = response.body.authorization;
@@ -331,7 +313,6 @@ describe('Teste API - Login', () => {
         });
 
         afterEach(() => {
-            console.log('tear down');
             cy.teardownUser();
         });
     });
