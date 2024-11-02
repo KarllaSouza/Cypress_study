@@ -1,14 +1,15 @@
 name: Cypress Tests - cron
 
 run-name: Running ${{github.event_name}}
+
 on:
   schedule:
     - cron: '30 16 * 11 6'
 
 jobs:
-        on-dispatch:
-          runs-on: ubuntu-20.04
-          steps:
-            - name: Execute at 16:30 on Saturdays in November
-            run:
-              echo "Executed today (November - saturday - 16:30)"
+  on-dispatch:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Execute at 16:30 on Saturdays in November
+        run: |
+        echo "Executed today (November - saturday - 16:30)"
