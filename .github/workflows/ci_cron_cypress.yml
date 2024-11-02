@@ -4,13 +4,33 @@ run-name: Running ${{github.event_name}}
 
 on:
   schedule:
-    - cron: '50 16 * 11 6'
+    - cron: '15 17 * 11 6'
 
 jobs:
   on-dispatch:
     runs-on: ubuntu-20.04
     steps:
-      - name: Execute at 16:50 on Saturdays in November
-        if: ${{ github.event_name.schedule == '50 16 * 11 6' }}
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          spec: cypress/e2e/api_testing/*.cy.js
+
+      - name: Execute at 17:15 on Saturdays in November
+        if: ${{ github.event_name.schedule == '15 17 * 11 6' }}
         run: |
-          echo "Executed today (November - saturday - 16:50)"
+          echo "Executed today (November - saturday - 17:15)"
+
+#jobs:
+#  cypress-run-api:
+#    runs-on: ubuntu-22.04
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#
+#      - name: Cypress run
+#        uses: cypress-io/github-action@v6
+#        with:
+#          spec: cypress/e2e/api_testing/*.cy.js
