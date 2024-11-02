@@ -12,9 +12,15 @@ Cypress.Commands.add('setupUser', () => {
         }
     }).then(response => {
         expect(response.status).to.eq(201);
-        const userId = response.body._id; // Armazena o ID do usuário criado, que é retornado no corpo da resposta da API.
-//        console.log(`user ID: ${userId}`) // Exibe o ID do usuário criado no console, o que pode ser útil para depuração.
-        Cypress.env('userId', userId) //Armazena o ID do usuário em uma variável de ambiente do Cypress (userId). Isso permite que outras partes do teste acessem este valor.
+
+        /**
+         * const userId = response.body._id; // Armazena o ID do usuário criado, que é retornado no corpo da resposta da API.
+         * //        console.log(`user ID: ${userId}`) // Exibe o ID do usuário criado no console, o que pode ser útil para depuração.
+         *         Cypress.env('userId', userId) //Armazena o ID do usuário em uma variável de ambiente do Cypress (userId). Isso permite que outras partes do teste acessem este valor.
+         * //        console.log(response.body); // Exibe o body resultado da requisição feita
+         */
+        const userId = response.body._id;
+        Cypress.env('userId', userId);
         expect(Cypress.env('userId'), userId);
         // '${Cypress.env(userId)}',
         //    expect(response.body.usuarios[0].nome).to.equal('QA Teste')
@@ -26,7 +32,6 @@ Cypress.Commands.add('setupUser', () => {
 
     }).then(response => {
         expect(response.status).to.eq(200);
-//        console.log(response.body);
         const userEmail = response.body.email;
         const userPassword = response.body.password;
         const userId = response.body._id;
@@ -86,7 +91,9 @@ Cypress.Commands.add('setupUser', () => {
     // });
 })
 
-
+/**
+ * function to delete user
+ */
 Cypress.Commands.add('teardownUser', () => {
     // console.log('teardown user');
     // console.log(`id: ${Cypress.env('userId')}`);
