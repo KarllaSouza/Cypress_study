@@ -1,6 +1,6 @@
-Cypress.Commands.add('setupUser', () => {
+Cypress.Commands.add('createUserFunction', () => {
     // it('Cadastrar usuário', () => {
-//    console.log('setup');
+    //console.log('setup');
     cy.request({
         url: 'https://serverest.dev/usuarios/', //'${urlApi}',
         method: 'POST',
@@ -94,7 +94,7 @@ Cypress.Commands.add('setupUser', () => {
 /**
  * function to delete user
  */
-Cypress.Commands.add('teardownUser', () => {
+Cypress.Commands.add('deleteUserFunction', () => {
     // console.log('teardown user');
     // console.log(`id: ${Cypress.env('userId')}`);
     cy.request({

@@ -176,10 +176,10 @@ describe('API tests - User', () => {
 
     context('Scenario 3 (fail): Duplicated record', () => {
         beforeEach(() => {
-            cy.setupUser();
+            cy.createUserFunction();
         });
 
-        it('Case 3.1: Duplicated email', () => {
+        it('Case 3.1: Duplicated email - POST', () => {
             cy.get('@user').then((user) => {
                 cy.request({
                     url: 'https://serverest.dev/usuarios/',
@@ -198,8 +198,56 @@ describe('API tests - User', () => {
             });
         });
 
+        it('Case 3.2: Duplicated email - PUT', () => {
+            cy.get('@user').then((user) => {
+                cy.request({
+                    url: `https://serverest.dev/usuarios/`,
+                    method: 'POST',
+                    body: {
+                        "nome": "QA Teste 2 - User 2",
+                        "email": "teste_2@qa.com",
+                        "password": "1234",
+                        "administrador": "true"
+                    },
+                }).then(response => {
+                    expect(201).to.eq(response.status);
+                    // console.log(`${JSON.stringify(response.body)}`);
+                    cy.wrap(response.body._id).as('user_id_2');
+                    expect(Cypress.env('user_id_2')).not.null;
+                });
+
+                cy.request({
+                    url: `https://serverest.dev/usuarios/${user.id}`,
+                    method: 'PUT',
+                    body: {
+                        "nome": "QA Teste 2 - editado",
+                        "email": "teste_2@qa.com",
+                        "password": "1234",
+                        "administrador": "true"
+                    },
+                    failOnStatusCode: false
+                }).then(response => {
+                    expect(400).to.eq(response.status);
+                    expect(response.body.message).to.eq('Este email já está sendo usado');
+                });
+
+
+                cy.get('@user_id_2').then(id => {
+                    cy.request({
+                        url: `https://serverest.dev/usuarios/${id}`,
+                        method: 'DELETE',
+                        body: {},
+                    }).then(response => {
+                        expect(response.status).to.eq(200);
+                        expect(response.body.message).to.eq('Registro excluído com sucesso');
+                    });
+                })
+
+            });
+        });
+
         afterEach(() => {
-            cy.teardownUser();
+            cy.deleteUserFunction();
         });
     });
 
@@ -282,23 +330,17 @@ describe('API tests - User', () => {
         });
     });
 
-//    context('', () => {});
+    context('Scenario 6 (fail): Delete user', () => {
+        it('Case 6.1: User ID null', () => {
+            cy.request({
+                url: `https://serverest.dev/usuarios/null`,
+                method: 'DELETE',
+                body: {}
+            }).then(response => {
+                expect(response.status).to.eq(200);
+                expect(response.body.message).to.eq('Nenhum registro excluído');
+            })
+        });
+    });
 
 });
-
-
-//       it('', () =>{
-//           cy.request({
-//               url: '',
-//               method: '',
-//               body: {}
-//           }).then(response => {
-//    expect(response.status).to.eq()
-//    console.log('user ID: '+response.body._id)
-//    Cypress.env('user_id', response._id)
-//           })
-//       });
-
-
-
-

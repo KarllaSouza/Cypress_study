@@ -2,12 +2,12 @@
 import ('../../support/commands.js')
 
 describe('API Tests - Login', () => {
-    context('Scenario 6: Execute Login', () => {
+    context('Scenario 7: Execute Login', () => {
         beforeEach(() => {
-            cy.setupUser();
+            cy.createUserFunction();
         })
 
-        it('Case 6.1: Success login', () => {
+        it('Case 7.1: Success login', () => {
             cy.request({
                 url: 'https://serverest.dev/login/',
                 method: 'POST',
@@ -27,8 +27,21 @@ describe('API Tests - Login', () => {
         });
 
         afterEach(() => {
-            cy.teardownUser();
+            cy.deleteUserFunction();
         });
     });
 
+    // context('Scenario 8 (Fail):', () => {
+    //     it('', () => {
+    //         cy.request({
+    //             url: '',
+    //             method: '',
+    //             body: {}
+    //         }).then(response => {
+    //             expect(response.status).to.eq()
+    //             console.log('user ID: ' + response.body._id)
+    //             Cypress.env('user_id', response._id)
+    //         })
+    //     });
+    // });
 })
