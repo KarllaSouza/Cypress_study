@@ -2,12 +2,13 @@
 import ('../../support/commands.js')
 
 describe('API Tests - Login', () => {
-    context('Scenario 7: Execute Login', () => {
-        beforeEach(() => {
-            cy.createUserFunction();
-        })
 
-        it('Case 7.1: Success login', () => {
+    before(() => {
+        cy.createUserFunction();
+    })
+
+    context('Scenario 7: Success login', () => {
+        it('Case 7.1: Execute Login', () => {
             cy.request({
                 url: 'https://serverest.dev/login/',
                 method: 'POST',
@@ -17,17 +18,35 @@ describe('API Tests - Login', () => {
                 },
                 // headers: `${Cypress.env('tokenAuthorization')}`
             }).then(response => {
-                expect(response.status).to.eq(200);
-                expect(response.body.message).to.eq('Login realizado com sucesso');
-                expect(response.body.authorization).to.not.eq(undefined);
+                expect(200).to.eq(response.status);
+                expect('Login realizado com sucesso').to.eq(response.body.message);
+                expect(undefined).to.not.eq(response.body.authorization);
+
+
+
                 const tokenAuthorization = response.body.authorization;
                 Cypress.env('tokenAuthorization', tokenAuthorization);
                 //    const authorization = `Bearer ${Cypress.env('ACCESS_TOKEN')}`
             });
         });
 
-        afterEach(() => {
-            cy.deleteUserFunction();
+    });
+
+    context('Scenario 8: Fail login', () => {
+        it('Case 8.1: Login with invalid data - email and password', () => {
+            cy.request({
+                url: 'https://serverest.dev/login/',
+                method: 'POST',
+                body: {
+                    "email": `emailll@email.com`,
+                    "password": `000`,
+                },
+                failOnStatusCode: false
+            }).then(response => {
+                expect(401).to.eq(response.status);
+                expect('Email e/ou senha inválidos').to.eq(response.body.message);
+                expect(undefined).to.eq(response.body.authorization);
+            });
         });
     });
 
@@ -44,4 +63,8 @@ describe('API Tests - Login', () => {
     //         })
     //     });
     // });
+
+    after(() => {
+        cy.deleteUserFunction();
+    });
 })

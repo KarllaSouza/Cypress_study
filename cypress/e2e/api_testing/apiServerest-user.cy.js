@@ -16,10 +16,10 @@ describe('API tests - User', () => {
                     "administrador": "true"
                 }
             }).then(response => {
-                expect(response.status).to.eq(201);
+                expect(201).to.eq(response.status);
                 const userId = response.body._id;
-                Cypress.env('userId', response.body._id)
-                expect(response.body.message).to.eq('Cadastro realizado com sucesso')
+                Cypress.env('userId', response.body._id);
+                expect('Cadastro realizado com sucesso').to.eq(response.body.message);
             })
         });
 
@@ -28,16 +28,16 @@ describe('API tests - User', () => {
                 url: `https://serverest.dev/usuarios/${Cypress.env('userId')}`,
                 method: 'GET',
             }).then(response => {
-                expect(response.status).to.eq(200);
-                expect(response.body.nome).to.not.eq(undefined);
-                expect(response.body.email).to.not.eq(undefined);
-                expect(response.body.password).to.not.eq(undefined);
-                expect(response.body._id).to.not.eq(undefined);
+                expect(200).to.eq(response.status);
+                expect(undefined).to.not.eq(response.body.nome);
+                expect(undefined).to.not.eq(response.body.email);
+                expect(undefined).to.not.eq(response.body.password);
+                expect(undefined).to.not.eq(response.body._id);
 
-                expect(response.body.nome).to.eq('QA Teste');
-                expect(response.body.email).to.eq('teste_1@qa.com');
-                expect(response.body.password).to.eq('123');
-                expect(response.body.administrador).to.eq('true');
+                expect('QA Teste').to.eq(response.body.nome);
+                expect('teste_1@qa.com').to.eq(response.body.email);
+                expect('123').to.eq(response.body.password);
+                expect('true').to.eq(response.body.administrador);
 
                 const userEmail = response.body.email;
                 const userPassword = response.body.password;
@@ -58,8 +58,8 @@ describe('API tests - User', () => {
                     "administrador": "false"
                 }
             }).then(response => {
-                expect(response.status).to.eq(200);
-                expect(response.body.message).to.eq('Registro alterado com sucesso')
+                expect(200).to.eq(response.status);
+                expect('Registro alterado com sucesso').to.eq(response.body.message);
             })
         });
 
@@ -68,11 +68,12 @@ describe('API tests - User', () => {
                 url: `https://serverest.dev/usuarios/${Cypress.env('userId')}`,
                 method: 'GET',
             }).then(response => {
-                expect(response.status).to.eq(200);
-                expect(response.body.nome).to.eq('QA Teste_editado');
-                expect(response.body.email).to.eq('teste_1_editado@qa.com');
-                expect(response.body.password).to.eq('123_edicao');
-                expect(response.body.administrador).to.eq('false');
+                expect(200).to.eq(response.status);
+
+                expect('QA Teste_editado').to.eq(response.body.nome);
+                expect('teste_1_editado@qa.com').to.eq(response.body.email);
+                expect('123_edicao').to.eq(response.body.password);
+                expect('false').to.eq(response.body.administrador);
 
                 const userNameUpdated = response.body.nome;
                 const userEmailUpdated = response.body.email;
@@ -92,8 +93,8 @@ describe('API tests - User', () => {
                 method: 'DELETE',
                 body: {}
             }).then(response => {
-                expect(response.status).to.eq(200);
-                expect(response.body.message).to.eq('Registro excluído com sucesso');
+                expect(200).to.eq(response.status);
+                expect('Registro excluído com sucesso').to.eq(response.body.message);
             })
         });
 
@@ -103,13 +104,13 @@ describe('API tests - User', () => {
                 method: 'GET',
                 failOnStatusCode: false  // Evita que o Cypress falhe automaticamente em caso de status de erro
             }).then(response => {
-                expect(response.status).to.eq(400);
-                expect(response.body.message).to.eq('Usuário não encontrado');
+                expect(400).to.eq(response.status);
+                expect('Usuário não encontrado').to.eq(response.body.message);
 
-                expect(response.body.nome).to.eq(undefined);
-                expect(response.body.email).to.eq(undefined);
-                expect(response.body.password).to.eq(undefined);
-                expect(response.body._id).to.eq(undefined);
+                expect(undefined).to.eq(response.body.nome);
+                expect(undefined).to.eq(response.body.email);
+                expect(undefined).to.eq(response.body.password);
+                expect(undefined).to.eq(response.body._id);
             })
         });
     });
@@ -126,9 +127,9 @@ describe('API tests - User', () => {
                     "administrador": "true"
                 }
             }).then(response => {
-                expect(response.status).to.eq(201);
-                expect(response.body.message).to.eq('Cadastro realizado com sucesso')
-                expect(response.body._id).to.not.equal(undefined)
+                expect(201).to.eq(response.status);
+                expect('Cadastro realizado com sucesso').to.eq(response.body.message);
+                expect(undefined).to.not.equal(response.body._id);
                 const userId = response.body._id;
                 Cypress.env('userId', response.body._id)
             })
@@ -139,11 +140,11 @@ describe('API tests - User', () => {
                 url: `https://serverest.dev/usuarios/${Cypress.env('userId')}`,
                 method: 'GET',
             }).then(response => {
-                expect(response.status).to.eq(200);
-                expect(response.body.nome).to.eq('QA Teste - criado no put');
-                expect(response.body.email).to.eq('teste_1_editado-no-put@qa.com');
-                expect(response.body.password).to.eq('teste123-put');
-                expect(response.body.administrador).to.eq('true');
+                expect(200).to.eq(response.status);
+                expect('QA Teste - criado no put').to.eq(response.body.nome);
+                expect('teste_1_editado-no-put@qa.com').to.eq(response.body.email);
+                expect('teste123-put').to.eq(response.body.password);
+                expect('true').to.eq(response.body.administrador);
             })
         });
 
@@ -153,8 +154,8 @@ describe('API tests - User', () => {
                 method: 'DELETE',
                 body: {}
             }).then(response => {
-                expect(response.status).to.eq(200);
-                expect(response.body.message).to.eq('Registro excluído com sucesso');
+                expect(200).to.eq(response.status);
+                expect('Registro excluído com sucesso').to.eq(response.body.message);
             })
         });
 
@@ -164,12 +165,13 @@ describe('API tests - User', () => {
                 method: 'GET',
                 failOnStatusCode: false
             }).then(response => {
-                expect(response.status).to.eq(400);
-                expect(response.body.message).to.eq('Usuário não encontrado');
-                expect(response.body.nome).to.eq(undefined);
-                expect(response.body.email).to.eq(undefined);
-                expect(response.body.password).to.eq(undefined);
-                expect(response.body._id).to.eq(undefined);
+                expect(400).to.eq(response.status);
+                expect('Usuário não encontrado').to.eq(response.body.message);
+
+                expect(undefined).to.eq(response.body.nome);
+                expect(undefined).to.eq(response.body.email);
+                expect(undefined).to.eq(response.body.password);
+                expect(undefined).to.eq(response.body._id);
             })
         });
     })
@@ -192,8 +194,8 @@ describe('API tests - User', () => {
                     },
                     failOnStatusCode: false
                 }).then(response => {
-                    expect(response.status).to.eq(400);
-                    expect(response.body.message).to.eq('Este email já está sendo usado');
+                    expect(400).to.eq(response.status);
+                    expect('Este email já está sendo usado').to.eq(response.body.message);
                 });
             });
         });
@@ -228,9 +230,8 @@ describe('API tests - User', () => {
                     failOnStatusCode: false
                 }).then(response => {
                     expect(400).to.eq(response.status);
-                    expect(response.body.message).to.eq('Este email já está sendo usado');
+                    expect('Este email já está sendo usado').to.eq(response.body.message);
                 });
-
 
                 cy.get('@user_id_2').then(id => {
                     cy.request({
@@ -238,8 +239,8 @@ describe('API tests - User', () => {
                         method: 'DELETE',
                         body: {},
                     }).then(response => {
-                        expect(response.status).to.eq(200);
-                        expect(response.body.message).to.eq('Registro excluído com sucesso');
+                        expect(200).to.eq(response.status);
+                        expect('Registro excluído com sucesso').to.eq(response.body.message);
                     });
                 })
 
@@ -264,11 +265,11 @@ describe('API tests - User', () => {
                 },
                 failOnStatusCode: false
             }).then(response => {
-                expect(response.status).to.eq(400);
-                expect(response.body.nome).to.eq('nome não pode ficar em branco');
-                expect(response.body.email).to.eq('email não pode ficar em branco');
-                expect(response.body.password).to.eq('password não pode ficar em branco');
-                expect(response.body.administrador).to.eq('administrador deve ser \'true\' ou \'false\'');
+                expect(400).to.eq(response.status);
+                expect('nome não pode ficar em branco').to.eq(response.body.nome);
+                expect('email não pode ficar em branco').to.eq(response.body.email);
+                expect('password não pode ficar em branco').to.eq(response.body.password);
+                expect('administrador deve ser \'true\' ou \'false\'').to.eq(response.body.administrador);
             })
         });
 
@@ -282,11 +283,11 @@ describe('API tests - User', () => {
                 },
                 failOnStatusCode: false
             }).then(response => {
-                expect(response.status).to.eq(400);
-                expect(response.body.nome).to.eq('nome é obrigatório');
-                expect(response.body.email).to.eq('email deve ser um email válido');
-                expect(response.body.password).to.eq('password é obrigatório');
-                expect(response.body.administrador).to.eq('administrador deve ser \'true\' ou \'false\'');
+                expect(400).to.eq(response.status);
+                expect('nome é obrigatório').to.eq(response.body.nome);
+                expect('email deve ser um email válido').to.eq(response.body.email);
+                expect('password é obrigatório').to.eq(response.body.password);
+                expect('administrador deve ser \'true\' ou \'false\'').to.eq(response.body.administrador);
             })
         });
 
@@ -297,11 +298,11 @@ describe('API tests - User', () => {
                 body: {},
                 failOnStatusCode: false
             }).then(response => {
-                expect(response.status).to.eq(400);
-                expect(response.body.nome).to.eq('nome é obrigatório');
-                expect(response.body.email).to.eq('email é obrigatório');
-                expect(response.body.password).to.eq('password é obrigatório');
-                expect(response.body.administrador).to.eq('administrador é obrigatório');
+                expect(400).to.eq(response.status);
+                expect('nome é obrigatório').to.eq(response.body.nome);
+                expect('email é obrigatório').to.eq(response.body.email);
+                expect('password é obrigatório').to.eq(response.body.password);
+                expect('administrador é obrigatório').to.eq(response.body.administrador);
             })
         });
     })
@@ -313,8 +314,8 @@ describe('API tests - User', () => {
                 method: 'GET',
                 failOnStatusCode: false
             }).then(response => {
-                expect(response.status).to.eq(400);
-                expect(response.body.email).to.equal('email deve ser um email válido');
+                expect(400).to.eq(response.status);
+                expect('email deve ser um email válido').to.eq(response.body.email);
             })
         });
 
@@ -324,8 +325,8 @@ describe('API tests - User', () => {
                 method: 'GET',
                 failOnStatusCode: false
             }).then(response => {
-                expect(response.status).to.eq(400);
-                expect(response.body.message).to.equal('Usuário não encontrado');
+                expect(400).to.eq(response.status);
+                expect('Usuário não encontrado').to.eq(response.body.message);
             })
         });
     });
@@ -337,8 +338,8 @@ describe('API tests - User', () => {
                 method: 'DELETE',
                 body: {}
             }).then(response => {
-                expect(response.status).to.eq(200);
-                expect(response.body.message).to.eq('Nenhum registro excluído');
+                expect(200).to.eq(response.status);
+                expect('Nenhum registro excluído').to.eq(response.body.message);
             })
         });
     });
