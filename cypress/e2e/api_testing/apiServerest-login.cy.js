@@ -22,11 +22,9 @@ describe('API Tests - Login', () => {
                 expect('Login realizado com sucesso').to.eq(response.body.message);
                 expect(undefined).to.not.eq(response.body.authorization);
 
-
-
                 const tokenAuthorization = response.body.authorization;
                 Cypress.env('tokenAuthorization', tokenAuthorization);
-                //    const authorization = `Bearer ${Cypress.env('ACCESS_TOKEN')}`
+
             });
         });
 
@@ -114,7 +112,7 @@ describe('API Tests - Login', () => {
             });
         });
 
-        it.only('Case 8.6: Login with valid email and blank password', () => {
+        it('Case 8.6: Login with valid email and blank password', () => {
             cy.request({
                 url: 'https://serverest.dev/login/',
                 method: 'POST',
@@ -132,20 +130,6 @@ describe('API Tests - Login', () => {
         });
 
     });
-
-    // context('Scenario 8 (Fail):', () => {
-    //     it('', () => {
-    //         cy.request({
-    //             url: '',
-    //             method: '',
-    //             body: {}
-    //         }).then(response => {
-    //             expect(response.status).to.eq()
-    //             console.log('user ID: ' + response.body._id)
-    //             Cypress.env('user_id', response._id)
-    //         })
-    //     });
-    // });
 
     after(() => {
         cy.deleteUserFunction();

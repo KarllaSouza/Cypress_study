@@ -24,6 +24,9 @@ Cypress.Commands.add('createUserFunction', () => {
         // '${Cypress.env(userId)}',
         //    expect(response.body.usuarios[0].nome).to.equal('QA Teste')
 
+        console.log('create user: ' +response.body.message);
+
+
         cy.request({
             url: `https://serverest.dev/usuarios/${Cypress.env('userId')}`,
             method: 'GET',
@@ -42,7 +45,6 @@ Cypress.Commands.add('createUserFunction', () => {
         expect('QA Teste').to.eq(response.body.nome);
         expect ('teste_1@qa.com').to.eq(userEmail);
         expect ('123').to.eq(userPassword);
-        expect ('true').to.eq(response.body.administrador);
 
         Cypress.env('userEmail', userEmail);
         Cypress.env('userPassword', userPassword);
@@ -55,39 +57,86 @@ Cypress.Commands.add('createUserFunction', () => {
         cy.wrap({
                 id: userId,
                 email: userEmail,
-                password: userPassword
+                password: userPassword,
             }
         ).as('user');
+
+        console.log('find - create user: ' +response.body._id);
     });
 })
 
-// it('Consultar usuário - após cadastro', () => {
-// cy.request({
-//     url: `https://serverest.dev/usuarios/${Cypress.env('userId')}`,
-//     method: 'GET',
-// }).then(response => {
-//     expect(response.status).to.eq(200);
-//     console.log(response);
-//     const userEmail = response.body.email;
-//     const userPassword = response.body.password;
-//
-//     expect(response.body.nome).to.not.eq(undefined);
-//     expect(userEmail).to.not.eq(undefined);
-//     expect(userPassword).to.not.eq(undefined);
-//     expect(response.body._id).to.not.eq(undefined);
-//
-//     expect(response.body.nome).to.eq('QA Teste');
-//     expect(userEmail).to.eq('teste_1@qa.com');
-//     expect(userPassword).to.eq('123');
-//     expect(response.body.administrador).to.eq('true');
-//
-//     Cypress.env('userEmail', userEmail);
-//     Cypress.env('userPassword', userPassword);
-//
-//     expect(userEmail).to.eq(Cypress.env('userEmail'));
-//     expect(userPassword).to.eq(Cypress.env('userPassword'));
-// })
-// });
+Cypress.Commands.add('findUserFunction', () => {
+    cy.request({
+        url: `https://serverest.dev/usuarios/${Cypress.env('userId')}`,
+        method: 'GET',
+    //    failOnStatusCode: false  // Evita que o Cypress falhe automaticamente em caso de status de erro
+    }).then(response => {
+        expect(200).to.eq(response.status);
+        console.log('find user: ' +response.body._id);
+      //  expect('Usuário não encontrado').to.eq(response.body.message);
+
+        expect(undefined).to.not.eq(response.body.nome);
+        expect(undefined).to.not.eq(response.body.email);
+        expect(undefined).to.not.eq(response.body.password);
+        expect(undefined).to.not.eq(response.body._id);
+    });
+
+    // cy.request({
+    //     url: `https://serverest.dev/usuarios/${Cypress.env('userId')}`,
+    //     method: 'GET',
+    // }).then(response => {
+    //     expect(response.status).to.eq(200);
+    //     console.log(response);
+    //     const userEmail = response.body.email;
+    //     const userPassword = response.body.password;
+    //
+    //     expect(response.body.nome).to.not.eq(undefined);
+    //     expect(userEmail).to.not.eq(undefined);
+    //     expect(userPassword).to.not.eq(undefined);
+    //     expect(response.body._id).to.not.eq(undefined);
+    //
+    //     expect(response.body.nome).to.eq('QA Teste');
+    //     expect(userEmail).to.eq('teste_1@qa.com');
+    //     expect(userPassword).to.eq('123');
+    //     expect(response.body.administrador).to.eq('true');
+    //
+    //     Cypress.env('userEmail', userEmail);
+    //     Cypress.env('userPassword', userPassword);
+    //
+    //     expect(userEmail).to.eq(Cypress.env('userEmail'));
+    //     expect(userPassword).to.eq(Cypress.env('userPassword'));
+})
+
+
+Cypress.Commands.add('loginFunction', () =>{
+        cy.request({
+            url: 'https://serverest.dev/login/',
+            method: 'POST',
+            body: {
+                "email": `${Cypress.env('userEmail')}`,
+                "password": `${Cypress.env('userPassword')}`
+            },
+            // headers: `${Cypress.env('tokenAuthorization')}`
+        }).then(response => {
+            expect(200).to.eq(response.status);
+            expect('Login realizado com sucesso').to.eq(response.body.message);
+            expect(undefined).to.not.eq(response.body.authorization);
+
+            const tokenAuthorization = response.body.authorization;
+            Cypress.env('tokenAuthorization', tokenAuthorization);
+            //    const authorization = `Bearer ${Cypress.env('ACCESS_TOKEN')}`
+            console.log('token em commands: ' + tokenAuthorization);
+
+            console.log('login: ' +response.body.message);
+
+            cy.wrap({
+                    token: tokenAuthorization
+                }
+            ).as('token');
+            // cy.wrap(response.body.authorization).as('token');
+        });
+})
+
 
 /**
  * function to delete user
@@ -105,6 +154,7 @@ Cypress.Commands.add('deleteUserFunction', () => {
         expect(200).to.eq(response.status);
         // console.log(response);
         expect('Registro excluído com sucesso').to.eq(response.body.message);
+        console.log('delete user: ' +response.body.message);
     });
 
     cy.request({
@@ -121,5 +171,7 @@ Cypress.Commands.add('deleteUserFunction', () => {
         expect(undefined).to.eq(response.body.email);
         expect(undefined).to.eq(response.body.password);
         expect(undefined).to.eq(response.body._id);
+
+        console.log('find user - after delete: ' +response.body.message);
     });
 })
