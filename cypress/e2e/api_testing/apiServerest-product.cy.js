@@ -235,8 +235,8 @@ describe('API Tests - Product', () => {
             })
         });
 
-        // it('Case 11.2: Duplicated name', () => {
-        //     cy.get('@token').then((token) => {
+        it('Case 11.2: Duplicated name', () => {
+            cy.get('@token').then((token) => {
         //
         //         /**
         //          * POST create product to use to validate the duplicated product name error
@@ -262,29 +262,28 @@ describe('API Tests - Product', () => {
         //             Cypress.env('productId2', response.body._id);
         //         });
         //
-        //         /**
-        //          * product with duplicated name should return an error
-        //          */
-        //         cy.request({
-        //             url: 'https://serverest.dev/produtos/',
-        //             method: 'POST',
-        //             body: {
-        //                 "nome": "Mouse souz",
-        //                 "preco": 50,
-        //                 "descricao": "Produto teste 1",
-        //                 "quantidade": 100
-        //             },
-        //             headers: {
-        //                 Authorization: token.token,
-        //             },
-        //             failOnStatusCode: false
-        //         }).then(response => {
-        //             expect(400).to.eq(response.status);
-        //             expect('Já existe produto com esse nome').to.eq(response.body.message);
-        //             expect(undefined).to.eq(response.body._id);
-        //             console.log(response);
-        //         });
-        //
+                /**
+                 * product with duplicated name should return an error
+                 */
+                cy.request({
+                    url: 'https://serverest.dev/produtos/',
+                    method: 'POST',
+                    body: {
+                        "nome": "Notebook Gamer ACER",
+                        "preco": 50,
+                        "descricao": "Produto teste 1",
+                        "quantidade": 100
+                    },
+                    headers: {
+                        Authorization: token.token,
+                    },
+                    failOnStatusCode: false
+                }).then(response => {
+                    expect(400).to.eq(response.status);
+                    expect('Já existe produto com esse nome').to.eq(response.body.message);
+                    expect(undefined).to.eq(response.body._id);
+                    console.log(response);
+                });
         //
         //         /**
         //          * delete product created
@@ -301,8 +300,8 @@ describe('API Tests - Product', () => {
         //                 expect(200).to.eq(response.status);
         //                 expect('Registro excluído com sucesso').to.eq(response.body.message);
         //             });
-        //     })
-        // });
+            })
+        });
 
         it('Case 11.3: Without body', () => {
             cy.get('@token').then((token) => {
@@ -349,7 +348,6 @@ describe('API Tests - Product', () => {
                 })
             });
         });
-
 
     })
 
