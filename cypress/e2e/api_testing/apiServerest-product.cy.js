@@ -215,7 +215,7 @@ describe('API Tests - Product', () => {
 
     })
 
-    context.only('Scenario 11 (fail): Create product', () => {
+    context('Scenario 11 (fail): Create product', () => {
 
         it('Case 11.1: Without Token', () => {
             cy.request({
