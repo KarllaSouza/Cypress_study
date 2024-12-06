@@ -117,7 +117,22 @@ describe('API Tests - Product', () => {
             });
         });
 
-        it('Case 9.7: Find product - after delete', () => {
+        it('Case 9.7: Delete product - second delete', () => {
+            cy.get('@token').then((token) => {
+                cy.request({
+                    url: `https://serverest.dev/produtos/${Cypress.env('productId')}`,
+                    method: 'DELETE',
+                    headers: {
+                        Authorization: token.token,
+                    }
+                }).then(response => {
+                    expect(200).to.eq(response.status);
+                    expect('Nenhum registro excluído').to.eq(response.body.message);
+                })
+            });
+        });
+
+        it('Case 9.8: Find product - after delete', () => {
             cy.request({
                 url: `https://serverest.dev/produtos/${Cypress.env('productId')}`,
                 method: 'GET',
@@ -200,9 +215,165 @@ describe('API Tests - Product', () => {
 
     })
 
+    context.only('Scenario 11 (fail): Create product', () => {
+
+        it('Case 11.1: Without Token', () => {
+            cy.request({
+                url: 'https://serverest.dev/produtos/',
+                method: 'POST',
+                body: {
+                    "nome": "Mouse k",
+                    "preco": 50,
+                    "descricao": "Produto teste 1",
+                    "quantidade": 100
+                },
+                failOnStatusCode: false
+            }).then(response => {
+                expect(401).to.eq(response.status);
+                expect('Token de acesso ausente, inválido, expirado ou usuário do token não existe mais').to.eq(response.body.message);
+                expect(undefined).to.eq(response.body._id);
+            })
+        });
+
+        // it('Case 11.2: Duplicated name', () => {
+        //     cy.get('@token').then((token) => {
+        //
+        //         /**
+        //          * POST create product to use to validate the duplicated product name error
+        //          */
+        //         cy.request({
+        //             url: 'https://serverest.dev/produtos/',
+        //             method: 'POST',
+        //             body: {
+        //                 "nome": "Mouse souz",
+        //                 "preco": 50,
+        //                 "descricao": "Produto teste 1",
+        //                 "quantidade": 100
+        //             },
+        //             headers: {
+        //                 Authorization: token.token,
+        //             }
+        //         }).then(response => {
+        //             console.log('create: ' + JSON.stringify(response.body));
+        //             expect(201).to.eq(response.status);
+        //             expect('Cadastro realizado com sucesso').to.eq(response.body.message);
+        //             expect(undefined).to.not.eq(response.body._id);
+        //             const productId2 = response.body._id;
+        //             Cypress.env('productId2', response.body._id);
+        //         });
+        //
+        //         /**
+        //          * product with duplicated name should return an error
+        //          */
+        //         cy.request({
+        //             url: 'https://serverest.dev/produtos/',
+        //             method: 'POST',
+        //             body: {
+        //                 "nome": "Mouse souz",
+        //                 "preco": 50,
+        //                 "descricao": "Produto teste 1",
+        //                 "quantidade": 100
+        //             },
+        //             headers: {
+        //                 Authorization: token.token,
+        //             },
+        //             failOnStatusCode: false
+        //         }).then(response => {
+        //             expect(400).to.eq(response.status);
+        //             expect('Já existe produto com esse nome').to.eq(response.body.message);
+        //             expect(undefined).to.eq(response.body._id);
+        //             console.log(response);
+        //         });
+        //
+        //
+        //         /**
+        //          * delete product created
+        //          */
+        //             cy.request({
+        //                 url: `https://serverest.dev/produtos/${Cypress.env('productId2')}`,
+        //                 method: 'DELETE',
+        //                 body: {},
+        //                 headers: {
+        //                     Authorization: token.token,
+        //                 }
+        //             }).then(response => {
+        //                 console.log('delete: ' + JSON.stringify(response.body));
+        //                 expect(200).to.eq(response.status);
+        //                 expect('Registro excluído com sucesso').to.eq(response.body.message);
+        //             });
+        //     })
+        // });
+
+        it('Case 11.3: Without body', () => {
+            cy.get('@token').then((token) => {
+                cy.request({
+                    url: 'https://serverest.dev/produtos/',
+                    method: 'POST',
+                    headers: {
+                        Authorization: token.token,
+                    },
+                    failOnStatusCode: false
+                }).then(response => {
+                    expect(400).to.eq(response.status);
+                    expect(undefined).to.eq(response.body._id);
+                    expect('nome é obrigatório').to.eq(response.body.nome);
+                    expect('preco é obrigatório').to.eq(response.body.preco);
+                    expect('descricao é obrigatório').to.eq(response.body.descricao);
+                    expect('quantidade é obrigatório').to.eq(response.body.quantidade);
+                })
+            });
+        });
+
+        it('Case 11.4: Without data', () => {
+            cy.get('@token').then((token) => {
+                cy.request({
+                    url: 'https://serverest.dev/produtos/',
+                    method: 'POST',
+                     body: {
+                        "nome": "",
+                        "preco": "",
+                        "descricao": "",
+                        "quantidade": ""
+                     },
+                    headers: {
+                        Authorization: token.token,
+                    },
+                    failOnStatusCode: false
+                }).then(response => {
+                    expect(400).to.eq(response.status);
+                    expect(undefined).to.eq(response.body._id);
+                    expect('nome não pode ficar em branco').to.eq(response.body.nome);
+                    expect('preco deve ser um número').to.eq(response.body.preco);
+                    expect('descricao não pode ficar em branco').to.eq(response.body.descricao);
+                    expect('quantidade deve ser um número').to.eq(response.body.quantidade);
+                })
+            });
+        });
+
+
+    })
+
+    context('Scenario xxx (fail): Find product', () => {
+        it('Case xx.x: ---', () => {});
+    })
+
+    context('Scenario xxx (fail): Update product', () => {
+        it('Case xx.x: ---', () => {});
+    })
+
+    context('Scenario xxx (fail): Delete product', () => {
+        it('Case 11.1: Without token', () => {
+
+        });
+
+        it('Case 11.2: Product Id Null', () => {
+
+        });
+    })
+
+
     afterEach(() => {
         cy.deleteUserFunction();
-        console.log('deletado');
     });
 })
 

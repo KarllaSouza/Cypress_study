@@ -24,7 +24,7 @@ Cypress.Commands.add('createUserFunction', () => {
         // '${Cypress.env(userId)}',
         //    expect(response.body.usuarios[0].nome).to.equal('QA Teste')
 
-        console.log('create user: ' +response.body.message);
+        // console.log('create user: ' +response.body.message);
 
 
         cy.request({
@@ -61,7 +61,7 @@ Cypress.Commands.add('createUserFunction', () => {
             }
         ).as('user');
 
-        console.log('find - create user: ' +response.body._id);
+        // console.log('find - create user: ' +response.body._id);
     });
 })
 
@@ -72,7 +72,7 @@ Cypress.Commands.add('findUserFunction', () => {
     //    failOnStatusCode: false  // Evita que o Cypress falhe automaticamente em caso de status de erro
     }).then(response => {
         expect(200).to.eq(response.status);
-        console.log('find user: ' +response.body._id);
+        // console.log('find user: ' +response.body._id);
       //  expect('Usuário não encontrado').to.eq(response.body.message);
 
         expect(undefined).to.not.eq(response.body.nome);
@@ -107,7 +107,6 @@ Cypress.Commands.add('findUserFunction', () => {
     //     expect(userPassword).to.eq(Cypress.env('userPassword'));
 })
 
-
 Cypress.Commands.add('loginFunction', () =>{
         cy.request({
             url: 'https://serverest.dev/login/',
@@ -125,9 +124,9 @@ Cypress.Commands.add('loginFunction', () =>{
             const tokenAuthorization = response.body.authorization;
             Cypress.env('tokenAuthorization', tokenAuthorization);
             //    const authorization = `Bearer ${Cypress.env('ACCESS_TOKEN')}`
-            console.log('token em commands: ' + tokenAuthorization);
-
-            console.log('login: ' +response.body.message);
+            // console.log('token em commands: ' + tokenAuthorization);
+            //
+            // console.log('login: ' +response.body.message);
 
             cy.wrap({
                     token: tokenAuthorization
@@ -135,6 +134,36 @@ Cypress.Commands.add('loginFunction', () =>{
             ).as('token');
             // cy.wrap(response.body.authorization).as('token');
         });
+})
+
+Cypress.Commands.add('createProductFunction', () => {
+    cy.get('@token').then((token) => {
+        cy.request({
+            url: 'https://serverest.dev/produtos/',
+            method: 'POST',
+            body: {
+                "nome": "Mouse k",
+                "preco": 50,
+                "descricao": "Produto teste 1",
+                "quantidade": 100
+            },
+            headers: {
+                Authorization: token.token,
+            }
+        }).then(response => {
+            // console.log('create: ' + JSON.stringify(response.body));
+            expect(201).to.eq(response.status);
+            expect('Cadastro realizado com sucesso').to.eq(response.body.message);
+            expect(undefined).to.not.eq(response.body._id);
+            const productId = response.body._id;
+            Cypress.env('productId', response.body._id);
+
+            cy.wrap({
+                productId: productId,
+                }
+            ).as('product');
+        })
+    });
 })
 
 
@@ -154,7 +183,7 @@ Cypress.Commands.add('deleteUserFunction', () => {
         expect(200).to.eq(response.status);
         // console.log(response);
         expect('Registro excluído com sucesso').to.eq(response.body.message);
-        console.log('delete user: ' +response.body.message);
+        // console.log('delete user: ' +response.body.message);
     });
 
     cy.request({
@@ -172,6 +201,24 @@ Cypress.Commands.add('deleteUserFunction', () => {
         expect(undefined).to.eq(response.body.password);
         expect(undefined).to.eq(response.body._id);
 
-        console.log('find user - after delete: ' +response.body.message);
+        // console.log('find user - after delete: ' +response.body.message);
+    });
+})
+
+/**
+ * function to delete product
+ */
+Cypress.Commands.add('deleteProductFunction', () => {
+    cy.get('@token').then((token) => {
+        cy.request({
+            url: `https://serverest.dev/produtos/${Cypress.env('productId')}`,
+            method: 'DELETE',
+            headers: {
+                Authorization: token.token,
+            }
+        }).then(response => {
+            expect(200).to.eq(response.status);
+            expect('Registro excluído com sucesso').to.eq(response.body.message);
+        })
     });
 })
