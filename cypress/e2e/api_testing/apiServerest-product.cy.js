@@ -100,9 +100,7 @@ describe('API Tests - Product', () => {
         });
 
         it('Case 9.6: Delete product', () => {
-            console.log('case: delete')
             cy.get('@token').then((token) => {
-                console.log('case: delete 1')
                 cy.request({
                     url: `https://serverest.dev/produtos/${Cypress.env('productId')}`,
                     method: 'DELETE',
@@ -310,21 +308,43 @@ describe('API Tests - Product', () => {
 
     })
 
-    context('Scenario xxx (fail): Find product', () => {
+
+    /**
+     * write scenarios to find and update product - fail tests
+     */
+    context('Scenario 12 (fail): Find product', () => {
         it('Case xx.x: ---', () => {});
     })
 
-    context('Scenario xxx (fail): Update product', () => {
+    context('Scenario 13 (fail): Update product', () => {
         it('Case xx.x: ---', () => {});
     })
 
-    context('Scenario xxx (fail): Delete product', () => {
-        it('Case 11.1: Without token', () => {
-
+    context('Scenario 14 (fail): Delete product', () => {
+        it('Case 14.1: Without token', () => {
+                cy.request({
+                    url: `https://serverest.dev/produtos/${Cypress.env('productId')}`,
+                    method: 'DELETE',
+                    failOnStatusCode: false
+                }).then(response => {
+                    expect(401).to.eq(response.status);
+                    expect('Token de acesso ausente, inválido, expirado ou usuário do token não existe mais').to.eq(response.body.message);
+                })
         });
 
-        it('Case 11.2: Product Id Null', () => {
-
+        it('Case 14.2: Product Id Null', () => {
+            cy.get('@token').then((token) => {
+                cy.request({
+                    url: 'https://serverest.dev/produtos/null',
+                    method: 'DELETE',
+                    headers: {
+                        Authorization: token.token,
+                    }
+                }).then(response => {
+                    expect(200).to.eq(response.status);
+                    expect('Nenhum registro excluído').to.eq(response.body.message);
+                })
+            });
         });
     })
 

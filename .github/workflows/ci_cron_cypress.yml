@@ -18,10 +18,10 @@ jobs:
         with:
           spec: cypress/e2e/api_testing/*.cy.js
 
-      - name: Execute at 17:15 on Saturdays in November
-        if: ${{ github.event_name.schedule == '15 17 * 11 6' }}
+      - name: Execute at 17:15 on Saturdays in December
+        if: ${{ github.event_name.schedule == '15 17 * 12 6' }}
         run: |
-          echo "Executed today (November - saturday - 17:15)"
+          echo "Executed today (December - saturday - 17:15)"
 
 #jobs:
 #  cypress-run-api:
