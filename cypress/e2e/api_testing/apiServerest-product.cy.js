@@ -237,32 +237,7 @@ describe('API Tests - Product', () => {
 
         it('Case 11.2: Duplicated name', () => {
             cy.get('@token').then((token) => {
-        //
-        //         /**
-        //          * POST create product to use to validate the duplicated product name error
-        //          */
-        //         cy.request({
-        //             url: 'https://serverest.dev/produtos/',
-        //             method: 'POST',
-        //             body: {
-        //                 "nome": "Mouse souz",
-        //                 "preco": 50,
-        //                 "descricao": "Produto teste 1",
-        //                 "quantidade": 100
-        //             },
-        //             headers: {
-        //                 Authorization: token.token,
-        //             }
-        //         }).then(response => {
-        //             console.log('create: ' + JSON.stringify(response.body));
-        //             expect(201).to.eq(response.status);
-        //             expect('Cadastro realizado com sucesso').to.eq(response.body.message);
-        //             expect(undefined).to.not.eq(response.body._id);
-        //             const productId2 = response.body._id;
-        //             Cypress.env('productId2', response.body._id);
-        //         });
-        //
-                /**
+                  /**
                  * product with duplicated name should return an error
                  */
                 cy.request({
@@ -284,22 +259,6 @@ describe('API Tests - Product', () => {
                     expect(undefined).to.eq(response.body._id);
                     console.log(response);
                 });
-        //
-        //         /**
-        //          * delete product created
-        //          */
-        //             cy.request({
-        //                 url: `https://serverest.dev/produtos/${Cypress.env('productId2')}`,
-        //                 method: 'DELETE',
-        //                 body: {},
-        //                 headers: {
-        //                     Authorization: token.token,
-        //                 }
-        //             }).then(response => {
-        //                 console.log('delete: ' + JSON.stringify(response.body));
-        //                 expect(200).to.eq(response.status);
-        //                 expect('Registro excluído com sucesso').to.eq(response.body.message);
-        //             });
             })
         });
 
