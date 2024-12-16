@@ -3,7 +3,6 @@
 * Cypress version: 13.15.1
 * Node version: 18.17.1
 
-
 #
 __API Tests: API Serverest__
 
