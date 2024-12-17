@@ -14,3 +14,5 @@ __API Tests: API Serverest__
 __UI Tests: Practise Automation__
 
 [![Cypress Tests UI - push](https://github.com/KarllaSouza/Cypress_study/actions/workflows/ci_push_cypress-UI.yml/badge.svg)](https://github.com/KarllaSouza/Cypress_study/actions/workflows/ci_push_cypress-UI.yml)
+
+[![Cypress Tests UI - cron](https://github.com/KarllaSouza/Cypress_study/actions/workflows/ci_cron_cypress-UI.yml/badge.svg?branch=main)](https://github.com/KarllaSouza/Cypress_study/actions/workflows/ci_cron_cypress-UI.yml)
