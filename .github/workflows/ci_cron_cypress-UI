@@ -20,17 +20,4 @@ jobs:
 
       - name: Execute at 15:59 on Tuesday, Thursday, and Saturday every month
         if: ${{ github.event_name.schedule == '59 15 * * 2,4,6' }}
-        run: |
-          echo "Executed today (Tuesday, Thursday and Saturday - 15:59)"
-
-#jobs:
-#  cypress-run-ui:
-#    runs-on: ubuntu-22.04
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v4
-#
-#      - name: Cypress run
-#        uses: cypress-io/github-action@v6
-#        with:
-#          spec: cypress/e2e/practice_automation_testing/*.cy.js
+        run: echo "Executed today (Tuesday, Thursday and Saturday - 15:59)"
