@@ -9,3 +9,6 @@ __API Tests: API Serverest__
 [![Cypress Tests - push](https://github.com/KarllaSouza/Cypress_study/actions/workflows/ci_push_cypress.yml/badge.svg)](https://github.com/KarllaSouza/Cypress_study/actions/workflows/ci_push_cypress.yml)
 
 [![Cypress Tests - cron](https://github.com/KarllaSouza/Cypress_study/actions/workflows/ci_cron_cypress.yml/badge.svg)](https://github.com/KarllaSouza/Cypress_study/actions/workflows/ci_cron_cypress.yml)
+
+#
+__System tests: Practise Automation__ (https://practice-automation.com/form-fields/)
