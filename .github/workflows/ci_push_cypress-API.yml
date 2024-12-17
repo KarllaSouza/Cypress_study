@@ -1,4 +1,4 @@
-name: Cypress Tests - push
+name: Cypress Tests API - push
 
 # trigger para workflow ser executado
 # push -> Todo push em qualquer branch

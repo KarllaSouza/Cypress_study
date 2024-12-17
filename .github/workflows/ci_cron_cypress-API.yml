@@ -1,4 +1,4 @@
-name: Cypress Tests - cron
+name: Cypress Tests API - cron
 
 run-name: Running ${{github.event_name}}
 
