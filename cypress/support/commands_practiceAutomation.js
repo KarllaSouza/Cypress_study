@@ -31,36 +31,36 @@ Cypress.Commands.add('fillOutForm', function(){
     const citacao = '"Uma vez rei ou rainha de Nárnia, sempre rei ou rainha de Nárnia." \n - Narnia"'
 
     cy.get('#name-input')
-        .type('Karlla', {delay: 200})
+        .type('Karlla', {delay: 150})
         .should('have.value', 'Karlla')
-        .wait(1000)
+        .wait(500)
 
     cy.get('[type="checkbox"]')
         .should('be.visible')
         .check(['Water', 'Milk', 'Coffee', 'Wine', 'Ctrl-Alt-Delight'])
         .should('be.checked')
-        .wait(1000)
+        .wait(500)
 
     cy.get('[type="radio"]')
         .should('be.visible')
         .check(['Blue'])
         .should('be.checked')
-        .wait(1000)
+        .wait(500)
 
     cy.get('#automation')
-        .should('be.visible').wait(300)
+        .should('be.visible').wait(150)
         .select('no').should('have.value', 'no')
-        .wait(200)
+        .wait(150)
 
     cy.get('#email')
-        .type('karlla@email.com', {delay: 200})
+        .type('karlla@email.com', {delay: 150})
         .should('have.value', 'karlla@email.com')
-        .wait(1000)
+        .wait(500)
 
     cy.get('#message')
         .type(citacao, {delay: 50})
         .should('have.value', citacao)
-        .wait(1000)
+        .wait(500)
 
     cy.get('#submit-btn').click().wait(150)
 })
@@ -78,20 +78,20 @@ Cypress.Commands.add('fillOutForm2', (nome, password,listaBebida, cor, automacao
     console.log(`Mensagem: ${mensagem}`);
 
     // Seleciona e preenche o campo de nome
-    cy.get('#name-input').type(nome, { delay: 100 }).should('have.value', nome).wait(1000);
-    cy.get('[type="password"]').type(password,{delay: 100}).should('have.value', password).wait(1000);
+    cy.get('#name-input').type(nome, { delay: 100 }).should('have.value', nome).wait(500);
+    cy.get('[type="password"]').type(password,{delay: 100}).should('have.value', password).wait(500);
 
     // Seleciona e preenche o checkbox de bebida
-    cy.get('[type="checkbox"]').should('be.visible').check(listaBebida).should('be.checked').wait(1000);
+    cy.get('[type="checkbox"]').should('be.visible').check(listaBebida).should('be.checked').wait(500);
 // Seleciona e preenche o radio de cor
     cy.get('[type="radio"]').should('be.visible').check(cor).should('be.checked').wait(400);
 // Seleciona e preenche o select de automacao
 
     cy.get('#automation').should('be.visible').wait(300).select(automacao).should('have.value', automacao).wait(200);
 // Seleciona e preenche o campo de email
-    cy.get('#email').type(email, {delay: 100}).should('have.value', email).wait(1000);
+    cy.get('#email').type(email, {delay: 100}).should('have.value', email).wait(500);
 // Seleciona e preenche o campo de mensagem
-    cy.get('#message').type(mensagem, {delay: 50}).should('have.value', mensagem).wait(1000);
+    cy.get('#message').type(mensagem, {delay: 50}).should('have.value', mensagem).wait(500);
 
     cy.get('#submit-btn').click().wait(150);
 })
