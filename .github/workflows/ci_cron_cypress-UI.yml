@@ -4,7 +4,7 @@ run-name: Running ${{github.event_name}}
 
 on:
   schedule:
-    - cron: '15 16 * * 2,4,6'
+    - cron: '20 16 * * 2,4,6'
 
 jobs:
   on-dispatch:
@@ -18,6 +18,6 @@ jobs:
         with:
           spec: cypress/e2e/practice_automation_testing/*.cy.js
 
-      - name: Execute at 16:15 on Tuesday, Thursday, and Saturday every month
-        if: ${{ github.event_name.schedule == '15 16 * * 2,4,6' }}
-        run: echo "Executed today (Tuesday, Thursday and Saturday - 16:15)"
+      - name: Execute at 16:20 on Tuesday, Thursday, and Saturday every month
+        if: ${{ github.event_name.schedule == '20 16 * * 2,4,6' }}
+        run: echo "Executed today (Tuesday, Thursday and Saturday - 16:20)"
