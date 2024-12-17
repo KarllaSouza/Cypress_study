@@ -5,7 +5,7 @@ name: Cypress Tests UI - push
 on: [ push ]
 
 jobs:
-  cypress-run-api:
+  cypress-run-UI:
     # if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-22.04
     steps:
