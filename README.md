@@ -12,3 +12,5 @@ __API Tests: API Serverest__
 
 #
 __System tests: Practise Automation__ (https://practice-automation.com/form-fields/)
+
+[![Cypress Tests UI - push](https://github.com/KarllaSouza/Cypress_study/actions/workflows/ci_push_cypress-UI.yml/badge.svg)](https://github.com/KarllaSouza/Cypress_study/actions/workflows/ci_push_cypress-UI.yml)
