@@ -20,4 +20,5 @@ jobs:
 
       - name: Execute at 16:20 on Tuesday, Thursday, and Saturday every month
         if: ${{ github.event_name.schedule == '20 16 * * 2,4,6' }}
-        run: echo "Executed today (Tuesday, Thursday and Saturday - 16:20)"
+        run: |
+          echo "Executed today (Tuesday, Thursday and Saturday - 16:20)"
